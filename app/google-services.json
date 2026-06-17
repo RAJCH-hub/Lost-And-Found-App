@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "909178284881",
+    "firebase_url": "https://mujlostfound-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "mujlostfound",
+    "storage_bucket": "mujlostfound.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:909178284881:android:374d996e577116d5384170",
+        "android_client_info": {
+          "package_name": "com.example.mynewapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOXGLhN3kF8lyQ6jS2vdi3GXqtCb1ORgc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:909178284881:android:8900fbabb48791bb384170",
+        "android_client_info": {
+          "package_name": "com.rajchauhan.mujlostfound"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOXGLhN3kF8lyQ6jS2vdi3GXqtCb1ORgc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
