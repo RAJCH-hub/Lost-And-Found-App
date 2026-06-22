@@ -16,7 +16,8 @@ class LostItemActivity : AppCompatActivity() {
 
     private var imageUri: Uri? = null
     private val PICK_IMAGE = 1
-
+    private lateinit var tvImageCount: TextView
+    private lateinit var tvWordCount: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -33,7 +34,8 @@ class LostItemActivity : AppCompatActivity() {
         val btnSubmit = findViewById<Button>(R.id.btnSubmit)
         val btnUploadImage = findViewById<Button>(R.id.btnUploadImage)
         val imagePreview = findViewById<ImageView>(R.id.imagePreview)
-        val tvWordCount = findViewById<TextView>(R.id.tvWordCount)
+        tvImageCount = findViewById(R.id.tvImageCount)
+        tvWordCount = findViewById(R.id.tvWordCount)
 
         val db = FirebaseFirestore.getInstance()
 
@@ -166,7 +168,11 @@ class LostItemActivity : AppCompatActivity() {
 
         if (requestCode == PICK_IMAGE && resultCode == RESULT_OK) {
             imageUri = data?.data
-            findViewById<ImageView>(R.id.imagePreview).setImageURI(imageUri)
+
+            findViewById<ImageView>(R.id.imagePreview)
+                .setImageURI(imageUri)
+
+            tvImageCount.text = "1 image selected"
         }
     }
 }

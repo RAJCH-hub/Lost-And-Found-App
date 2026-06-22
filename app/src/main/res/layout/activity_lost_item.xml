@@ -12,7 +12,7 @@
         <ImageView
             android:id="@+id/imagePreview"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="181dp"
             android:scaleType="centerCrop"
             android:src="@android:drawable/ic_menu_gallery" />
 
@@ -125,6 +125,23 @@
                     android:textColor="@android:color/white"
                     android:backgroundTint="#1976D2"
                     android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Maximum 3 images allowed"
+                    android:textColorLink="#454040"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvImageCount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="no images selected"
+                    android:textColorLink="#474343"
+                    android:textSize="12sp" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
