@@ -13,7 +13,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
 
 class LostItemActivity : AppCompatActivity() {
-
     private var imageUri: Uri? = null
     private val PICK_IMAGE = 1
     private lateinit var tvImageCount: TextView
@@ -67,8 +66,9 @@ class LostItemActivity : AppCompatActivity() {
 
         // ✅ Image Picker
         btnUploadImage.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK)
+            val intent = Intent(Intent.ACTION_GET_CONTENT)
             intent.type = "image/*"
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
             startActivityForResult(intent, PICK_IMAGE)
         }
 
