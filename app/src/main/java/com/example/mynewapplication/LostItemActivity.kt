@@ -11,9 +11,17 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
+import okhttp3.*
+import java.io.IOException
+import org.json.JSONObject
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
+
 
 class LostItemActivity : AppCompatActivity() {
     private var imageUri: Uri? = null
+    private var imageUrl: String = ""
     private val PICK_IMAGE = 1
     private lateinit var tvImageCount: TextView
     private lateinit var tvWordCount: TextView
@@ -66,9 +74,8 @@ class LostItemActivity : AppCompatActivity() {
 
         // ✅ Image Picker
         btnUploadImage.setOnClickListener {
-            val intent = Intent(Intent.ACTION_GET_CONTENT)
+            val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
-            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
             startActivityForResult(intent, PICK_IMAGE)
         }
 
@@ -124,7 +131,7 @@ class LostItemActivity : AppCompatActivity() {
                 "contact" to contact,
                 "description" to description,
                 "timestamp" to System.currentTimeMillis(),
-                "imageUri" to (imageUri?.toString() ?: "")
+                "imageUrl" to imageUrl
             )
 
             docRef.set(item)
@@ -173,6 +180,81 @@ class LostItemActivity : AppCompatActivity() {
                 .setImageURI(imageUri)
 
             tvImageCount.text = "1 image selected"
+
+
+            imageUri?.let {
+                uploadToCloudinary(it)
+            }
+
+
         }
+    }
+    private fun uploadToCloudinary(imageUri: Uri) {
+
+        tvImageCount.text = "Uploading..."
+
+        try {
+            val file = getFileFromUri(imageUri)
+
+            val client = OkHttpClient()
+
+            val requestBody = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart(
+                    "file",
+                    file.name,
+                    file.asRequestBody("image/*".toMediaType())
+                )
+                .addFormDataPart("upload_preset", "lostfound_preset")
+                .build()
+
+            val request = Request.Builder()
+                .url("https://api.cloudinary.com/v1_1/djqzkvaj3/image/upload")
+                .post(requestBody)
+                .build()
+
+            client.newCall(request).enqueue(object : Callback {
+
+                override fun onFailure(call: Call, e: IOException) {
+                    runOnUiThread {
+                        tvImageCount.text = e.message ?: "Upload failed"
+                    }
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+
+                    val body = response.body?.string()
+
+                    if (response.isSuccessful && body != null) {
+
+                        val json = JSONObject(body)
+
+                        imageUrl = json.getString("secure_url")
+
+                        runOnUiThread {
+                            tvImageCount.text = "Upload successful"
+                        }
+
+                    } else {
+                        runOnUiThread {
+                            tvImageCount.text = "Error ${response.code}"
+                        }
+                    }
+                }
+            })
+
+        } catch (e: Exception) {
+            tvImageCount.text = "Error"
+        }
+    }
+    private fun getFileFromUri(uri: Uri): File {
+        val inputStream = contentResolver.openInputStream(uri)!!
+        val tempFile = File.createTempFile("upload", ".jpg", cacheDir)
+
+        tempFile.outputStream().use { output ->
+            inputStream.copyTo(output)
+        }
+
+        return tempFile
     }
 }
