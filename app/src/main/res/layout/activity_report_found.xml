@@ -1,68 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="180dp"
         android:orientation="vertical"
         android:padding="16dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:text="Report Found Item"
             android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="20dp"/>
-
-
+            android:textStyle="bold" />
 
 
         <EditText
             android:id="@+id/etItemName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Item Name"/>
+            android:hint="Item Name" />
 
 
         <Spinner
             android:id="@+id/spinnerCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"/>
+            android:layout_marginTop="12dp" />
 
         <EditText
             android:id="@+id/etLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Found Location"
-            android:layout_marginTop="12dp"/>
+            android:layout_marginTop="12dp"
+            android:hint="Found Location" />
 
         <EditText
             android:id="@+id/etDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Description"
-            android:layout_marginTop="12dp"/>
+            android:layout_marginTop="12dp"
+            android:hint="Description" />
 
 
         <TextView
             android:id="@+id/tvWordCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0 / 300 characters"
-            android:layout_margin="6dp" />
+            android:layout_margin="6dp"
+            android:text="0 / 300 characters" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            app:srcCompat="@drawable/baseline_image_24" />
+
+        <Button
+            android:id="@+id/FoundItemUploadImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="UPLOAD IMAGE" />
+
+        <TextView
+            android:id="@+id/tvFoundImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No image selected" />
 
         <Button
             android:id="@+id/btnSubmitFound"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Submit Found Item"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="20dp"
+            android:text="Submit Found Item" />
 
-        
 
     </LinearLayout>
 

@@ -118,7 +118,7 @@
 
                 <!-- BUTTONS -->
                 <Button
-                    android:id="@+id/btnUploadImage"
+                    android:id="@+id/FoundItemUploadImage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="UPLOAD IMAGE"

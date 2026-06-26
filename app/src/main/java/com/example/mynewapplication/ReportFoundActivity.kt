@@ -9,7 +9,19 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.net.Uri
+import android.widget.ImageView
+import android.content.Intent
+import android.view.View
+
+
 class ReportFoundActivity : AppCompatActivity() {
+    private var selectedImageUri: Uri? = null
+    private lateinit var imageView: ImageView
+    private lateinit var btnUploadImage: Button
+    private lateinit var tvFoundImageCount: TextView
+
+    private val PICK_IMAGE = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,8 +31,9 @@ class ReportFoundActivity : AppCompatActivity() {
         val etDescription = findViewById<EditText>(R.id.etDescription)
         val etItemName= findViewById<EditText>(R.id.etItemName)
         val etLocation=  findViewById<EditText>(R.id.etLocation)
-
-
+        imageView = findViewById(R.id.imageView)
+        btnUploadImage = findViewById(R.id.FoundItemUploadImage)
+        tvFoundImageCount = findViewById(R.id.tvFoundImage)
 
         val spinnerCategory=findViewById<Spinner>(R.id.spinnerCategory)
 
@@ -78,6 +91,12 @@ class ReportFoundActivity : AppCompatActivity() {
             ) {}
         })
 
+        btnUploadImage.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            startActivityForResult(intent, PICK_IMAGE)
+        }
+
         btnSubmitFound.setOnClickListener {
 
             val itemName = etItemName.text.toString().trim()
@@ -108,6 +127,14 @@ class ReportFoundActivity : AppCompatActivity() {
                 etDescription.error = "Description is required"
                 return@setOnClickListener
             }
+            if (selectedImageUri == null) {
+                Toast.makeText(
+                    this,
+                    "Please upload an image",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
 
             Toast.makeText(
                 this,
@@ -116,6 +143,24 @@ class ReportFoundActivity : AppCompatActivity() {
             ).show()
 
             finish()
+        }
+    }
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?
+    ) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == PICK_IMAGE &&
+            resultCode == RESULT_OK &&
+            data != null
+        ) {
+            selectedImageUri = data.data
+
+            imageView.setImageURI(selectedImageUri)
+            imageView.visibility = View.VISIBLE
+            tvFoundImageCount.text = "1 image selected"
         }
     }
 }
