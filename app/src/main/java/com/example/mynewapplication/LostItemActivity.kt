@@ -39,7 +39,7 @@ class LostItemActivity : AppCompatActivity() {
 
         val spinnerCategory = findViewById<Spinner>(R.id.spinnerCategory)
         val btnSubmit = findViewById<Button>(R.id.btnSubmit)
-        val btnUploadImage = findViewById<Button>(R.id.tvFoundImage)
+        val btnUploadImage = findViewById<Button>(R.id.FoundItemUploadImage)
         val imagePreview = findViewById<ImageView>(R.id.imagePreview)
         tvImageCount = findViewById(R.id.tvImageCount)
         tvWordCount = findViewById(R.id.tvWordCount)

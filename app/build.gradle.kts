@@ -65,5 +65,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation("com.cloudinary:cloudinary-android:2.3.1")
 }
 

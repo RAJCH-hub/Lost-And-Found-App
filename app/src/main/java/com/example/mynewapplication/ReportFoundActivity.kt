@@ -13,7 +13,9 @@ import android.net.Uri
 import android.widget.ImageView
 import android.content.Intent
 import android.view.View
-
+import com.cloudinary.android.MediaManager
+import com.cloudinary.android.callback.UploadCallback
+import com.google.firebase.firestore.FirebaseFirestore
 
 class ReportFoundActivity : AppCompatActivity() {
     private var selectedImageUri: Uri? = null
@@ -26,7 +28,8 @@ class ReportFoundActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_report_found)
-
+        CloudinaryConfig.init(this)
+        val db = FirebaseFirestore.getInstance()
         val btnSubmitFound = findViewById<Button>(R.id.btnSubmitFound)
         val etDescription = findViewById<EditText>(R.id.etDescription)
         val etItemName= findViewById<EditText>(R.id.etItemName)
@@ -136,13 +139,72 @@ class ReportFoundActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            Toast.makeText(
-                this,
-                "Found Item Submitted Successfully",
-                Toast.LENGTH_SHORT
-            ).show()
+            selectedImageUri?.let { uri ->
 
-            finish()
+                MediaManager.get().upload(uri)
+                    .callback(object : UploadCallback {
+
+                        override fun onStart(requestId: String?) {
+
+                        }
+
+                        override fun onProgress(requestId: String?, bytes: Long, totalBytes: Long) {
+
+                        }
+
+                        override fun onSuccess(requestId: String?, resultData: MutableMap<Any?, Any?>?) {
+
+                            val imageUrl = resultData?.get("secure_url").toString()
+                            val docRef = db.collection("found_items").document()
+                            val item = hashMapOf(
+                                "id" to docRef.id,
+                                "itemName" to itemName,
+                                "category" to category,
+                                "location" to location,
+                                "description" to description,
+                                "imageUrl" to imageUrl,
+                                "timestamp" to System.currentTimeMillis()
+                            )
+                            docRef.set(item)
+                                .addOnSuccessListener {
+
+                                    Toast.makeText(
+                                        this@ReportFoundActivity,
+                                        "Found Item Submitted Successfully",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+
+                                    finish()
+                                }
+                                .addOnFailureListener {
+
+                                    Toast.makeText(
+                                        this@ReportFoundActivity,
+                                        "Error saving found item",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+
+                            // We will save this imageUrl to Firestore in the next step.
+                        }
+
+                        override fun onError(requestId: String?, error: com.cloudinary.android.callback.ErrorInfo?) {
+
+                            Toast.makeText(
+                                this@ReportFoundActivity,
+                                "Upload Failed",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                        }
+
+                        override fun onReschedule(requestId: String?, error: com.cloudinary.android.callback.ErrorInfo?) {
+
+                        }
+
+                    }).dispatch()
+
+            }
         }
     }
     override fun onActivityResult(
